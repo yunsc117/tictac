@@ -237,9 +237,9 @@
     input[type=range].v-range:active::-webkit-slider-thumb { cursor: grabbing; }
 
     /* ─── Beat dots ──────────────────────────────── */
-    .beats-row { display: flex; gap: 7px; flex-wrap: wrap; justify-content: center; min-height: 20px; }
+    .beats-row { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; min-height: 30px; }
     .beat-dot {
-      width: 15px; height: 15px; border-radius: 50%;
+      width: 30px; height: 30px; border-radius: 50%;
       background: var(--surface2); border: 2px solid var(--surface2); flex-shrink: 0;
       transition: background 0.08s, border-color 0.08s, box-shadow 0.08s;
     }
@@ -531,6 +531,9 @@
     <div class="spirit-bubble" id="spiritBubble"></div>
   </div>
 
+  <div class="beats-row" id="beatsRow"></div>
+  <div class="sub-beats-row" id="subBeatsRow"></div>
+
   <div class="bpm-block">
     <div class="bpm-row">
       <button class="adj-btn" id="bpmMinus" aria-label="BPM -1">−</button>
@@ -543,30 +546,6 @@
     <div class="bpm-label">BPM · tap to edit</div>
     <div class="tempo-name" id="tempoName">Allegretto</div>
   </div>
-
-  <div class="v-sliders-row">
-    <div class="v-slider-group">
-      <div class="v-label">BPM</div>
-      <span class="v-tip">240</span>
-      <input type="range" class="v-range" id="bpmSlider" min="20" max="240" value="120" />
-      <span class="v-tip">20</span>
-    </div>
-    <div class="v-slider-group">
-      <div class="v-label">PITCH</div>
-      <span class="v-tip">Hi</span>
-      <input type="range" class="v-range" id="pitchSlider" min="50" max="200" step="5" value="100" />
-      <span class="v-tip">Lo</span>
-    </div>
-    <div class="v-slider-group">
-      <div class="v-label">VOL</div>
-      <span class="v-tip">Hi</span>
-      <input type="range" class="v-range" id="volumeSlider" min="0" max="100" step="5" value="80" />
-      <span class="v-tip">Lo</span>
-    </div>
-  </div>
-
-  <div class="beats-row" id="beatsRow"></div>
-  <div class="sub-beats-row" id="subBeatsRow"></div>
 
   <!-- Time signature dropdown + subdivision in one row -->
   <div class="sig-subdiv-row">
@@ -636,6 +615,27 @@
       </div>
 
   </div><!-- /.sig-subdiv-row -->
+
+  <div class="v-sliders-row">
+    <div class="v-slider-group">
+      <div class="v-label">BPM</div>
+      <span class="v-tip">240</span>
+      <input type="range" class="v-range" id="bpmSlider" min="20" max="240" value="120" />
+      <span class="v-tip">20</span>
+    </div>
+    <div class="v-slider-group">
+      <div class="v-label">PITCH</div>
+      <span class="v-tip">Hi</span>
+      <input type="range" class="v-range" id="pitchSlider" min="50" max="200" step="5" value="100" />
+      <span class="v-tip">Lo</span>
+    </div>
+    <div class="v-slider-group">
+      <div class="v-label">VOL</div>
+      <span class="v-tip">Hi</span>
+      <input type="range" class="v-range" id="volumeSlider" min="0" max="100" step="5" value="80" />
+      <span class="v-tip">Lo</span>
+    </div>
+  </div>
 
   <button class="play-btn" id="playBtn" aria-label="재생/정지">
     <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
