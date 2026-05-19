@@ -228,9 +228,19 @@
     input[type=range]:active::-webkit-slider-thumb { cursor: grabbing; }
     .slider-labels { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-dim); margin-top: 6px; }
 
-    /* ─── Pitch slider ──────────────────────────── */
-    .pitch-wrap { width: 100%; max-width: 300px; }
-    .pitch-row-label { font-size: 0.7rem; color: var(--text-dim); letter-spacing: 0.2em; text-align: center; margin-bottom: 2px; }
+    /* ─── Aux sliders (pitch + volume side-by-side) ── */
+    .aux-sliders-row {
+      display: flex; gap: 16px;
+      width: 100%; max-width: 300px;
+    }
+    .aux-slider {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; gap: 3px;
+    }
+    .aux-label {
+      font-size: 0.65rem; color: var(--text-dim);
+      letter-spacing: 0.18em;
+    }
 
     /* ─── Beat dots ──────────────────────────────── */
     .beats-row { display: flex; gap: 7px; flex-wrap: wrap; justify-content: center; min-height: 20px; }
@@ -555,10 +565,17 @@
       <div class="slider-labels"><span>20</span><span>240</span></div>
     </div>
 
-    <div class="pitch-wrap">
-      <div class="pitch-row-label">PITCH</div>
-      <input type="range" id="pitchSlider" min="50" max="200" step="5" value="100" />
-      <div class="slider-labels"><span>Low</span><span>High</span></div>
+    <div class="aux-sliders-row">
+      <div class="aux-slider">
+        <div class="aux-label">PITCH</div>
+        <input type="range" id="pitchSlider" min="50" max="200" step="5" value="100" />
+        <div class="slider-labels"><span>Lo</span><span>Hi</span></div>
+      </div>
+      <div class="aux-slider">
+        <div class="aux-label">VOLUME</div>
+        <input type="range" id="volumeSlider" min="0" max="100" step="5" value="80" />
+        <div class="slider-labels"><span>Lo</span><span>Hi</span></div>
+      </div>
     </div>
 
     <div class="beats-row" id="beatsRow"></div>
@@ -749,7 +766,8 @@
 <script>
   /* ── State ── */
   let bpm = 120;
-  let pitchMult = 1.0;
+  let pitchMult  = 1.0;
+  let volumeMult = 0.8;
   let beatsPerBar = 4;
   let subdiv = 1;           // 1=quarter, 2=eighth, 4=sixteenth
   let running = false;
@@ -769,6 +787,7 @@
   const tempoName      = document.getElementById('tempoName');
   const bpmSlider      = document.getElementById('bpmSlider');
   const pitchSlider    = document.getElementById('pitchSlider');
+  const volumeSlider   = document.getElementById('volumeSlider');
   const beatsRow       = document.getElementById('beatsRow');
   const subBeatsRow    = document.getElementById('subBeatsRow');
   const playBtn        = document.getElementById('playBtn');
@@ -832,9 +851,9 @@
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.connect(gain); gain.connect(audioCtx.destination);
-    if (isAccent)      { osc.frequency.value = 1200 * pitchMult; gain.gain.setValueAtTime(0.85, time); }
-    else if (isOnBeat) { osc.frequency.value = 900  * pitchMult; gain.gain.setValueAtTime(0.60, time); }
-    else               { osc.frequency.value = 700  * pitchMult; gain.gain.setValueAtTime(0.32, time); }
+    if (isAccent)      { osc.frequency.value = 1200 * pitchMult; gain.gain.setValueAtTime(0.85 * volumeMult, time); }
+    else if (isOnBeat) { osc.frequency.value = 900  * pitchMult; gain.gain.setValueAtTime(0.60 * volumeMult, time); }
+    else               { osc.frequency.value = 700  * pitchMult; gain.gain.setValueAtTime(0.32 * volumeMult, time); }
     gain.gain.exponentialRampToValueAtTime(0.001, time + 0.04);
     osc.start(time); osc.stop(time + 0.05);
   }
@@ -910,7 +929,8 @@
   setBpm(120);
 
   bpmSlider.addEventListener('input', () => setBpm(+bpmSlider.value));
-  pitchSlider.addEventListener('input', () => { pitchMult = pitchSlider.value / 100; });
+  pitchSlider.addEventListener('input',  () => { pitchMult  = pitchSlider.value  / 100; });
+  volumeSlider.addEventListener('input', () => { volumeMult = volumeSlider.value / 100; });
 
   bpmDisplay.addEventListener('wheel', e => {
     e.preventDefault();
