@@ -145,10 +145,12 @@
     .adj-btn:hover  { background: var(--accent); color: #fff; }
     .adj-btn:active { transform: scale(0.9); }
 
+    #bpmWrapper { position: relative; min-width: 130px; text-align: center; }
+
     .bpm-display {
       font-size: clamp(3.4rem, 13vw, 5rem);
       font-weight: 700; letter-spacing: -2px; line-height: 1;
-      color: var(--text); min-width: 130px; text-align: center;
+      color: var(--text); text-align: center;
       cursor: text; user-select: none; touch-action: none;
       border-bottom: 2px solid transparent; padding-bottom: 2px;
       transition: border-color 0.2s;
@@ -158,15 +160,17 @@
     .bpm-input {
       font-size: clamp(3.4rem, 13vw, 5rem);
       font-weight: 700; letter-spacing: -2px; line-height: 1;
-      color: var(--accent); width: 160px; min-width: 130px; text-align: center;
+      color: var(--text); text-align: center;
       background: transparent; border: none;
-      border-bottom: 2px solid var(--accent);
-      outline: none; display: none; padding-bottom: 2px;
+      border-bottom: 2px solid transparent;
+      outline: none; padding-bottom: 2px;
+      position: absolute; top: 0; left: 0; width: 100%;
+      visibility: hidden;
       -moz-appearance: textfield;
     }
     .bpm-input::-webkit-outer-spin-button,
     .bpm-input::-webkit-inner-spin-button { -webkit-appearance: none; }
-    .bpm-input.show { display: block; }
+    .bpm-input.show { visibility: visible; border-bottom-color: var(--accent); }
 
     .bpm-label  { font-size: 0.75rem; color: var(--text-dim); letter-spacing: 0.2em; margin-top: 4px; }
     .tempo-name { font-size: 0.85rem; color: var(--accent); letter-spacing: 0.1em; min-height: 1.2em; margin-top: 2px; }
@@ -903,7 +907,7 @@
   /* BPM direct input */
   bpmDisplay.addEventListener('click', openBpmInput);
   function openBpmInput() {
-    bpmDisplay.style.display = 'none';
+    bpmDisplay.style.visibility = 'hidden';
     bpmInput.value = bpm;
     bpmInput.classList.add('show');
     bpmInput.focus(); bpmInput.select();
@@ -912,12 +916,12 @@
     const v = parseInt(bpmInput.value, 10);
     if (!isNaN(v)) setBpm(v);
     bpmInput.classList.remove('show');
-    bpmDisplay.style.display = '';
+    bpmDisplay.style.visibility = '';
   }
   bpmInput.addEventListener('blur', closeBpmInput);
   bpmInput.addEventListener('keydown', e => {
     if (e.key === 'Enter')  { e.preventDefault(); bpmInput.blur(); }
-    if (e.key === 'Escape') { bpmInput.classList.remove('show'); bpmDisplay.style.display = ''; }
+    if (e.key === 'Escape') { bpmInput.classList.remove('show'); bpmDisplay.style.visibility = ''; }
   });
 
   /* ── Time signature dropdown ── */
