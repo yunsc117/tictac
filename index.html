@@ -129,37 +129,6 @@
       box-shadow: var(--shadow);
       transition: background 0.25s, box-shadow 0.25s;
     }
-    /* ─── Spirit Level ───────────────────────────── */
-    .spirit-level {
-      width: 100%; max-width: 280px;
-      height: 44px;
-      background: var(--surface2);
-      border-radius: 22px;
-      position: relative;
-      overflow: hidden;
-      flex-shrink: 0;
-    }
-    .spirit-level::before {
-      content: ''; position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 2px; height: 60%;
-      background: var(--text-dim); opacity: 0.4;
-    }
-    .spirit-bubble {
-      width: 34px; height: 34px;
-      background: var(--accent); border-radius: 50%;
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      box-shadow: 0 0 14px var(--accent);
-      transition: left 0.22s cubic-bezier(0.34, 1.4, 0.64, 1);
-    }
-    .spirit-bubble.accent {
-      background: var(--accent2);
-      box-shadow: 0 0 20px var(--accent2);
-    }
-
     /* ─── BPM block ──────────────────────────────── */
     .bpm-block { text-align: center; width: 100%; }
     .bpm-row { display: flex; align-items: center; justify-content: center; gap: 10px; }
@@ -204,7 +173,7 @@
 
     /* ─── Vertical sliders ───────────────────────── */
     .v-sliders-row {
-      display: flex; gap: 24px;
+      display: flex; gap: 30px;
       justify-content: center; align-items: center;
       width: 100%;
     }
@@ -237,9 +206,9 @@
     input[type=range].v-range:active::-webkit-slider-thumb { cursor: grabbing; }
 
     /* ─── Beat dots ──────────────────────────────── */
-    .beats-row { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; min-height: 30px; }
+    .beats-row { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; min-height: 50px; }
     .beat-dot {
-      width: 30px; height: 30px; border-radius: 50%;
+      width: 50px; height: 50px; border-radius: 50%;
       background: var(--surface2); border: 2px solid var(--surface2); flex-shrink: 0;
       transition: background 0.08s, border-color 0.08s, box-shadow 0.08s;
     }
@@ -527,10 +496,6 @@
 
 <div class="card">
 
-  <div class="spirit-level">
-    <div class="spirit-bubble" id="spiritBubble"></div>
-  </div>
-
   <div class="beats-row" id="beatsRow"></div>
   <div class="sub-beats-row" id="subBeatsRow"></div>
 
@@ -760,7 +725,6 @@
   let subdivClickCount = 0;
   let nextBeatTime = 0;
   let schedulerTimer = null;
-  let swingDir = 1;
   let audioCtx = null;
   let currentSigLabel = '4/4';
 
@@ -782,7 +746,6 @@
   const sigMenu        = document.getElementById('sigMenu');
   const sigLabel       = document.getElementById('sigLabel');
   const subdivGroup    = document.getElementById('subdivGroup');
-  const spiritBubble   = document.getElementById('spiritBubble');
   const themeBtn       = document.getElementById('themeBtn');
   const themeColorMeta = document.getElementById('themeColorMeta');
 
@@ -849,16 +812,8 @@
     while (visualQueue.length && visualQueue[0].time <= now) {
       const ev = visualQueue.shift();
       highlightDot(ev.beat, ev.sub);
-      if (ev.sub === 0) swingSpirit(ev.beat === 0);
     }
     if (running) requestAnimationFrame(processVisuals);
-  }
-
-  /* ── Spirit level ── */
-  function swingSpirit(isAccent) {
-    spiritBubble.style.left = swingDir > 0 ? '72%' : '28%';
-    spiritBubble.classList.toggle('accent', isAccent);
-    swingDir *= -1;
   }
 
   /* ── Scheduler ── */
@@ -881,7 +836,7 @@
   /* ── Play / Stop ── */
   async function start() {
     await ensureCtx();
-    running = true; subdivClickCount = 0; swingDir = 1;
+    running = true; subdivClickCount = 0;
     nextBeatTime = audioCtx.currentTime + 0.05;
     scheduler();
     requestAnimationFrame(processVisuals);
@@ -893,8 +848,6 @@
     clearTimeout(schedulerTimer); visualQueue.length = 0;
     playBtn.classList.remove('running');
     playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
-    spiritBubble.style.left = '50%';
-    spiritBubble.classList.remove('accent');
     beatsRow.querySelectorAll('.beat-dot').forEach(d => d.classList.remove('active'));
     subBeatsRow.querySelectorAll('.sub-beat-dot').forEach(d => d.classList.remove('active'));
   }
