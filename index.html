@@ -55,7 +55,7 @@
       align-items: center;
       justify-content: center;
       padding: max(env(safe-area-inset-top), 16px) max(env(safe-area-inset-right), 16px)
-               max(env(safe-area-inset-bottom), 16px) max(env(safe-area-inset-left), 16px);
+               max(env(safe-area-inset-bottom), 46px) max(env(safe-area-inset-left), 16px);
       gap: 14px;
       -webkit-tap-highlight-color: transparent;
       touch-action: manipulation;
@@ -220,7 +220,7 @@
     .beat-dot.active.accent-dot { background: var(--accent2); border-color: var(--accent2); box-shadow: 0 0 14px var(--accent2); }
 
     /* ─── Sub-beat dots ──────────────────────────── */
-    .sub-beats-row { display: none; gap: 10px; justify-content: center; align-items: center; min-height: 14px; }
+    .sub-beats-row { display: flex; visibility: hidden; gap: 10px; justify-content: center; align-items: center; min-height: 14px; }
     .sub-beat-dot {
       width: 9px; height: 9px; border-radius: 50%;
       background: var(--surface2); border: 1.5px solid var(--surface2); flex-shrink: 0;
@@ -339,6 +339,147 @@
       .subdiv-btn  { padding: 8px 14px; min-height: 42px; }
       .play-btn    { width: 60px; height: 60px; }
     }
+
+    /* ─── Footer ─────────────────────────────────── */
+    .site-footer {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      padding: 8px 16px max(env(safe-area-inset-bottom), 10px);
+      z-index: 10;
+      pointer-events: none;
+    }
+    .footer-link {
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px 2px;
+      transition: color 0.15s;
+      pointer-events: all;
+      font-family: inherit;
+    }
+    .footer-link:hover { color: var(--accent); }
+    .footer-sep { color: var(--text-dim); opacity: 0.3; font-size: 0.65rem; pointer-events: none; }
+
+    /* ─── Overlays ─────────────────────────────────── */
+    .page-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 500;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(100%);
+      transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .page-overlay.open { transform: translateY(0); }
+
+    .overlay-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: max(env(safe-area-inset-top), 20px) 24px 16px;
+      border-bottom: 1px solid var(--surface2);
+      flex-shrink: 0;
+      transition: border-color 0.25s;
+    }
+    .overlay-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .overlay-close {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--surface2);
+      border: none;
+      cursor: pointer;
+      color: var(--text);
+      font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, color 0.15s;
+      flex-shrink: 0;
+    }
+    .overlay-close:hover  { background: var(--accent); color: #fff; }
+    .overlay-close:active { transform: scale(0.92); }
+
+    .overlay-body {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      touch-action: pan-y;
+      padding: 28px 24px max(env(safe-area-inset-bottom), 36px);
+      max-width: 680px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .overlay-body h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 28px 0 10px;
+      letter-spacing: 0.03em;
+    }
+    .overlay-body h2:first-child { margin-top: 0; }
+    .overlay-body p {
+      font-size: 0.88rem;
+      line-height: 1.82;
+      color: var(--text);
+      opacity: 0.82;
+      margin-bottom: 12px;
+    }
+    .overlay-body ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 16px;
+    }
+    .overlay-body li {
+      font-size: 0.88rem;
+      line-height: 1.82;
+      color: var(--text);
+      opacity: 0.82;
+      padding-left: 16px;
+      position: relative;
+    }
+    .overlay-body li::before { content: '·'; position: absolute; left: 4px; color: var(--accent); }
+    .overlay-body table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 8px 0 20px;
+      font-size: 0.83rem;
+    }
+    .overlay-body th,
+    .overlay-body td {
+      padding: 8px 10px;
+      text-align: left;
+      border-bottom: 1px solid var(--surface2);
+    }
+    .overlay-body th {
+      color: var(--text-dim);
+      font-weight: 600;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .overlay-body td { color: var(--text); opacity: 0.82; }
+    .overlay-body td:first-child { color: var(--accent); font-weight: 600; opacity: 1; font-style: italic; }
+    .overlay-body .contact-link {
+      display: inline-block;
+      margin-top: 6px;
+      color: var(--accent);
+      font-size: 0.88rem;
+      text-decoration: none;
+    }
+    .overlay-body .contact-link:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -427,6 +568,20 @@
           </svg>
         </button>
 
+        <!-- 셋잇단음표 (triplet) -->
+        <button class="subdiv-btn" data-subdiv="3" aria-label="셋잇단음표" title="셋잇단음표">
+          <svg viewBox="0 0 28 22" width="28" height="24" fill="currentColor">
+            <ellipse cx="3.5" cy="18.5" rx="3.2" ry="2.2" transform="rotate(-15,3.5,18.5)"/>
+            <ellipse cx="13.5" cy="18.5" rx="3.2" ry="2.2" transform="rotate(-15,13.5,18.5)"/>
+            <ellipse cx="23.5" cy="18.5" rx="3.2" ry="2.2" transform="rotate(-15,23.5,18.5)"/>
+            <rect x="6.2" y="4.5" width="1.4" height="14" rx="0.7"/>
+            <rect x="16.2" y="4.5" width="1.4" height="14" rx="0.7"/>
+            <rect x="26.2" y="4.5" width="1.4" height="14" rx="0.7"/>
+            <rect x="6.2" y="4" width="21.4" height="2.2" rx="1"/>
+            <text x="13.5" y="3.2" text-anchor="middle" dominant-baseline="auto" font-size="4.5" font-weight="700" font-family="sans-serif">3</text>
+          </svg>
+        </button>
+
         <!-- ♬ 16분음표 (sixteenth note) -->
         <button class="subdiv-btn" data-subdiv="4" aria-label="16분음표" title="16분음표">
           <svg viewBox="0 0 16 22" width="16" height="24" fill="currentColor">
@@ -445,6 +600,101 @@
       <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
     </button>
 
+  </div>
+</div>
+
+<!-- ─── Footer ──────────────────────────────────── -->
+<footer class="site-footer">
+  <button class="footer-link" onclick="openOverlay('about')">About</button>
+  <span class="footer-sep">|</span>
+  <button class="footer-link" onclick="openOverlay('privacy')">Privacy Policy</button>
+</footer>
+
+<!-- ─── About overlay ────────────────────────── -->
+<div class="page-overlay" id="overlay-about" role="dialog" aria-modal="true" aria-label="About">
+  <div class="overlay-header">
+    <span class="overlay-title">About</span>
+    <button class="overlay-close" onclick="closeOverlay('about')" aria-label="Close">✕</button>
+  </div>
+  <div class="overlay-body">
+    <h2>What is a Metronome?</h2>
+    <p>A metronome produces a steady beat to help musicians maintain a consistent tempo during practice. It is an essential tool for players of any instrument — piano, guitar, violin, drums and more — for building reliable rhythmic accuracy.</p>
+
+    <h2>Features</h2>
+    <ul>
+      <li>BPM range 20 – 240, covering everything from the slowest to the fastest pieces</li>
+      <li>Time signatures: 1/4, 2/4, 3/4, 4/4, 3/8, 6/8, 9/8, 12/8</li>
+      <li>Subdivisions: quarter note, eighth note, triplet, and sixteenth note</li>
+      <li>Pendulum animation for visual beat tracking</li>
+      <li>Precise click sound via the Web Audio API</li>
+      <li>Dark / Light theme with preference saved locally</li>
+      <li>Runs in the browser with no installation required (PWA-ready)</li>
+    </ul>
+
+    <h2>How to Use</h2>
+    <p>Click the BPM number to type a value directly. You can also adjust the tempo with the +/− buttons, the slider, the mouse wheel, or by swiping up and down on the BPM display. Select a time signature and subdivision, then press the play button to start. The spacebar works as a play/stop shortcut.</p>
+
+    <h2>Tempo Markings</h2>
+    <p>Italian tempo terms used in music notation, mapped to their BPM ranges:</p>
+    <table>
+      <thead>
+        <tr><th>Term</th><th>BPM</th><th>Character</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Larghissimo</td><td>20 – 39</td><td>Extremely slow and solemn</td></tr>
+        <tr><td>Grave</td><td>40 – 59</td><td>Slow and dignified</td></tr>
+        <tr><td>Largo</td><td>60 – 65</td><td>Broad and slow</td></tr>
+        <tr><td>Larghetto</td><td>66 – 75</td><td>Rather slow</td></tr>
+        <tr><td>Adagio</td><td>76 – 83</td><td>Slow and lyrical</td></tr>
+        <tr><td>Andante</td><td>84 – 97</td><td>Walking pace</td></tr>
+        <tr><td>Andantino</td><td>98 – 107</td><td>Slightly faster than Andante</td></tr>
+        <tr><td>Moderato</td><td>108 – 115</td><td>Moderate speed</td></tr>
+        <tr><td>Allegretto</td><td>116 – 131</td><td>Moderately fast and lively</td></tr>
+        <tr><td>Allegro</td><td>132 – 167</td><td>Fast and energetic</td></tr>
+        <tr><td>Presto</td><td>168 – 199</td><td>Very fast</td></tr>
+        <tr><td>Prestissimo</td><td>200+</td><td>As fast as possible</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Practice Tips</h2>
+    <p>Start at 60–70% of your target tempo and build clean technique before increasing speed. A good rule: if you can play something correctly five times in a row, raise the BPM by 5. Use triplet or sixteenth-note subdivision to sharpen rhythmic precision within each beat.</p>
+  </div>
+</div>
+
+<!-- ─── Privacy overlay ───────────────────────── -->
+<div class="page-overlay" id="overlay-privacy" role="dialog" aria-modal="true" aria-label="Privacy Policy">
+  <div class="overlay-header">
+    <span class="overlay-title">Privacy Policy</span>
+    <button class="overlay-close" onclick="closeOverlay('privacy')" aria-label="Close">✕</button>
+  </div>
+  <div class="overlay-body">
+    <p>This policy describes how the <strong>Metronome</strong> web application (the "Service") handles information. Last updated: May 2026.</p>
+
+    <h2>No Personal Data Collected</h2>
+    <p>This Service does not collect any personally identifiable information. No account, login, name, email address, or location is required or requested.</p>
+
+    <h2>Local Storage</h2>
+    <p>Your chosen theme (dark or light mode) is saved using your browser's localStorage so it persists across visits. This data never leaves your device and is never transmitted to any server.</p>
+    <ul>
+      <li>Key stored: <code>metro-theme</code> (value: "dark" or "light")</li>
+      <li>No personal information included</li>
+      <li>No data sent to external servers</li>
+    </ul>
+
+    <h2>Cookies &amp; Tracking</h2>
+    <p>The Service itself uses no cookies and includes no third-party tracking scripts.</p>
+
+    <h2>Advertising (Google AdSense)</h2>
+    <p>The Service displays advertisements served by Google AdSense.</p>
+    <ul>
+      <li>Google and third-party vendors use cookies to serve ads based on your prior visits to this Service or other websites.</li>
+      <li>Google's use of advertising cookies enables it and its partners to serve ads to you based on your visit to this Service and/or other sites on the Internet.</li>
+      <li>You may opt out of personalized advertising by visiting <a class="contact-link" href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Google Ads Settings</a>.</li>
+      <li>Alternatively, you can opt out of a third-party vendor's use of cookies for personalized advertising by visiting <a class="contact-link" href="http://www.aboutads.info" target="_blank" rel="noopener">aboutads.info</a>.</li>
+    </ul>
+
+    <h2>Changes to This Policy</h2>
+    <p>This policy may be updated at any time. Material changes will be reflected on this page.</p>
   </div>
 </div>
 
@@ -505,8 +755,8 @@
   }
   function buildSubDots() {
     subBeatsRow.innerHTML = '';
-    if (subdiv <= 1) { subBeatsRow.style.display = 'none'; return; }
-    subBeatsRow.style.display = 'flex';
+    if (subdiv <= 1) { subBeatsRow.style.visibility = 'hidden'; return; }
+    subBeatsRow.style.visibility = 'visible';
     for (let i = 0; i < subdiv; i++) {
       const d = document.createElement('div');
       d.className = 'sub-beat-dot';
@@ -524,9 +774,9 @@
   }
 
   /* ── Audio ── */
-  function ensureCtx() {
+  async function ensureCtx() {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
+    if (audioCtx.state === 'suspended') await audioCtx.resume();
   }
   function scheduleClick(time, isAccent, isOnBeat) {
     const osc = audioCtx.createOscillator();
@@ -578,8 +828,8 @@
   }
 
   /* ── Play / Stop ── */
-  function start() {
-    ensureCtx();
+  async function start() {
+    await ensureCtx();
     running = true; subdivClickCount = 0; swingDir = 1;
     nextBeatTime = audioCtx.currentTime + 0.05;
     scheduler();
@@ -724,6 +974,21 @@
   }
   themeBtn.addEventListener('click', () => applyTheme(!isDark));
   if (localStorage.getItem('metro-theme') === 'light') applyTheme(false);
+
+  /* ── Overlays ── */
+  function openOverlay(id) {
+    document.getElementById('overlay-' + id).classList.add('open');
+  }
+  function closeOverlay(id) {
+    document.getElementById('overlay-' + id).classList.remove('open');
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.page-overlay.open').forEach(el => {
+        el.classList.remove('open');
+      });
+    }
+  });
 
   /* ── Double-tap zoom prevention ── */
   let lastTap = 0;
