@@ -795,8 +795,15 @@
 
   /* ── Audio ── */
   async function ensureCtx() {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    if (audioCtx.state === 'suspended') await audioCtx.resume();
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      audioCtx.onstatechange = () => {
+        if ((audioCtx.state === 'interrupted' || audioCtx.state === 'suspended') && running) {
+          stop();
+        }
+      };
+    }
+    if (audioCtx.state === 'suspended' || audioCtx.state === 'interrupted') await audioCtx.resume();
   }
   function scheduleClick(time, isAccent, isOnBeat) {
     const osc = audioCtx.createOscillator();
